@@ -64,7 +64,7 @@ class ConstellationLoaded extends StatelessWidget {
           Visibility(
             visible: constellation?.nameBr != null,
             child: Text(
-                constellation?.nameBr ?? 'aasa',
+                constellation?.nameBr ?? '',
                 style: context.text.titleConstellation,
             ),
           ),
