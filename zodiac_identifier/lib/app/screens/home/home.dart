@@ -73,31 +73,39 @@ class _HomeState extends BaseState<Home, HomeController> {
             
             child: Stack(
               children: [
-                image == null
-                  ? Initial(function: () => controller.pickImage())
-                  : ConstellationLoaded(
-                      image: image,
-                      constellation: constellation,
-                      status: _state,
-                    ),
+                Visibility(
+                  visible: image != null,
+
+                  replacement: Initial(function: () => controller.pickImage()),
+
+                  child: ConstellationLoaded(
+                    image: image,
+                    constellation: constellation,
+                    status: _state,
+                  ),
+                ),
 
                 Align(
                   alignment: Alignment.bottomCenter,
 
-                  child: constellation == null && _state
-                      ? Button(
-                          title: image != null
-                              ? 'IDENTIFICAR'
-                              : 'SELECIONE UMA IMAGEM',
+                  child: Visibility(
+                    visible: constellation == null && _state,
 
-                          function: () => image != null
-                              ? controller.identify(state.encodeImage!)
-                              : controller.pickImage(),
-                        )
-                      : Button(
-                          title: 'SELECIONE UMA NOVA IMAGEM',
-                          function: () => controller.pickImage(),
-                        ),
+                    replacement: Button(
+                      title: 'SELECIONE UMA NOVA IMAGEM',
+                      function: () => controller.pickImage(),
+                    ),
+
+                    child: Button(
+                      title: image != null
+                          ? 'IDENTIFICAR'
+                          : 'SELECIONE UMA IMAGEM',
+
+                      function: () => image != null
+                          ? controller.identify(state.encodeImage!)
+                          : controller.pickImage(),
+                    ),
+                  ),
                 ),
               ],
             )
